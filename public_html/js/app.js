@@ -58,6 +58,7 @@ var sisane = angular.module('myApp', [
     'zonaimagenControllers',
     'tecnicaControllers',
     'tratamientoControllers',
+    'analiticaControllers',
     'ui.bootstrap',
     'ngSanitize'
 ]);
@@ -271,6 +272,15 @@ sisane.config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/tecnica/selection/:page?/:rpp?', {templateUrl: 'js/tecnica/selection.html', controller: 'TecnicaSelectionController'});
 
         //------------
+        
+        $routeProvider.when('/analitica/view/:id', {templateUrl: 'js/analitica/view.html', controller: 'AnaliticaViewController'});
+        $routeProvider.when('/analitica/new/:id?', {templateUrl: 'js/analitica/new.html', controller: 'AnaliticaNewController'});
+        $routeProvider.when('/analitica/edit/:id', {templateUrl: 'js/analitica/edit.html', controller: 'AnaliticaEditController'});
+        $routeProvider.when('/analitica/remove/:id', {templateUrl: 'js/analitica/remove.html', controller: 'AnaliticaRemoveController'});
+        $routeProvider.when('/analitica/plist/:page?/:rpp?', {templateUrl: 'js/analitica/plist.html', controller: 'AnaliticaPListController'});
+        $routeProvider.when('/analitica/selection/:page?/:rpp?', {templateUrl: 'js/analitica/selection.html', controller: 'AnaliticaSelectionController'});
+
+        //------------
 
         $routeProvider.otherwise({redirectTo: '/'});
     }]);
@@ -332,6 +342,7 @@ var moduloZonaimagen = angular.module('zonaimagenControllers', []);
 var moduloDiagnostico = angular.module('diagnosticoControllers', []);
 var moduloTecnica = angular.module('tecnicaControllers', []);
 var moduloTratamiento = angular.module('tratamientoControllers', []);
+var moduloAnalitica = angular.module('analiticaControllers', []);
 
 //-------------
 var moduloDirectivas = angular.module('Directives', []);

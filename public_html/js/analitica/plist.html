@@ -1,0 +1,164 @@
+<!--
+Copyright (c) 2015 by Rafael Angel Aznar Aparici (rafaaznar at gmail dot com)
+
+escalamio: The stunning micro-library that helps you to develop easily
+            AJAX web applications by using Angular.js 1.x & zylkanexy
+escalamio is distributed under the MIT License (MIT)
+Sources at https://github.com/rafaelaznar/
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+-->
+
+<div id="wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="font-family:Oswald , serif;"  ng-include="'js/system/header.html'"></div>
+                    <div class="panel-body" ng-cloak>
+                        <div class="row">
+                            <div class="col-xs-12" ng-show="status">
+                                <div class="alert alert-danger" role="alert">
+                                    <h3 class="bg-danger">{{status}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12" ng-show="!status">
+                                <div role="tabpanel">
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li role="presentation" class="active">
+                                            <a data-target="#pane0" aria-controls="pane0" role="tab" data-toggle="tab" aria-expanded="false">Consulta</a>
+                                        </li>
+                                        <li role="presentation"><a data-target="#pane1" aria-controls="pane1" role="tab" data-toggle="tab" aria-expanded="true">Campos visibles</a></li>
+                                        <li role="presentation"><a data-target="#pane2" aria-controls="pane2" role="tab" data-toggle="tab">Filtro de servidor</a></li>
+                                        <li role="presentation"><a data-target="#pane3" aria-controls="pane3" role="tab" data-toggle="tab">Filtro de cliente</a></li>
+                                        <li role="presentation"><a data-target="#pane4" aria-controls="pane4" role="tab" data-toggle="tab">Nuevo {{obtitle}}</a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div role="tabpanel" id="pane0" class="tab-pane fade active in">
+                                            <p></p>
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                                    <plistinfo></plistinfo>
+                                                </div>
+                                                <div class="col-lg-6  col-md-6 col-sm-8 text-center">
+                                                    <plistpagination></plistpagination>
+                                                </div>
+                                                <div class="col-lg-3  col-md-3 col-sm-4 text-center">
+                                                    <plistrpp></plistrpp>
+                                                </div>
+                                            </div>
+                                            <p></p>
+                                        </div>
+                                        <div role="tabpanel" id="pane1" class="tab-pane fade">
+                                            <div class="row">
+                                                <div class="col-md-12 text-center">
+                                                    <p></p>
+                                                    <plistvisiblefields></plistvisiblefields>
+                                                    <p></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" id="pane3" class="tab-pane fade">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p></p>
+                                                    <form class="navbar-form navbar-right" role="form" action="Controller" method="post" id="empresaForm">
+                                                        <input id="inputFiltervalueClient" class="form-control" name="filtervalue" type="text" size="20" maxlength="50" value="" width="100" style="width: 140px" placeholder="Valor" ng-model="searchText">
+                                                    </form>
+                                                    <p></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" id="pane4" class="tab-pane fade">
+                                            <div class="row">
+                                                <div class="col-md-12 text-center">
+                                                    <p><br>
+                                                        <a class="btn btn-primary" href="{{ob}}/new">Crear un nuevo {{ob}}</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="datos" ng-show="!status">
+                                    <table class="table table-responsive table-bordered table-hover table-striped table-condensed dataTable no-footer">
+                                        <thead plistheader></thead>
+                                        <tbody>
+                                            <tr ng-repeat="obj in page| filter:searchText">
+                                                <td ng-repeat="f in fields" ng-show="f.visible"  class="text-right">
+                                                    <div ng-show="f.visible && f.type == 'id'"><b>{{obj[f.name]}}</b></div>
+                                                    <div ng-show="f.visible && f.type == 'date'" class="text-center">{{obj[f.name]}}</div>
+                                                    <div ng-show="f.visible && f.type == 'integer'" class="text-center">{{obj[f.name]}}</div>
+                                                    <div ng-show="f.visible && f.type == 'decimal'" class="text-center">{{obj[f.name]}}</div>
+                                                    <div ng-show="f.visible && f.type == 'text'" class="text-left">{{obj[f.name]|clipString}}</div>
+                                                    <div ng-show="f.visible && f.type == 'textarea'" class="text-left">{{obj[f.name]|clipString}}</div>
+                                                    <div ng-show="f.visible && f.type == 'boolean'" class="text-center" ng-bind-html="obj[f.name] | booleanizate"></div>  
+                                                    <!------------------------------------------------>
+                                                    <div ng-show="f.visible && f.name == 'obj_tipomuestra'" class="text-center"><a href="tipomuestra/view/{{obj.obj_tipomuestra.id}}">{{obj.obj_tipomuestra.descripcion}}</a></div>
+                                                    <!------------------------------------------------>
+                                                    <div ng-show="f.visible && f.name == 'obj_anticoagulante'" class="text-center"><a href="anticoagulante/view/{{obj.obj_anticoagulante.id}}">{{obj.obj_anticoagulante.descripcion}}</a></div>  
+                                                    <!------------------------------------------------>
+                                                    <div ng-show="f.visible && f.name == 'obj_prioridad'" class="text-center"><a href="prioridad/view/{{obj.obj_prioridad.id}}">{{obj.obj_prioridad.descripcion}}</a></div>
+                                                    <!------------------------------------------------>
+                                                    <div ng-show="f.visible && f.name == 'obj_episodio'" class="text-center"><a href="episodio/view/{{obj.obj_episodio.id}}">{{obj.obj_episodio.informe|clipString}}</a></div>  
+                                                </td>
+                                                <td>
+                                                    <div class="btn-toolbar" role="toolbar">
+                                                        <div class="btn-group">
+                                                            <a class="btn btn-default btn-xs" href="{{ob}}/view/{{obj.id}}">
+                                                                <span class="glyphicon glyphicon-eye-open"></span>
+                                                            </a>
+                                                            <a class="btn btn-default btn-xs" ng-click="pop(obj.id, 'analitica', 'AnaliticaViewpopController', 'viewpop')">
+                                                                <span class="glyphicon glyphicon-eye-open"></span>
+                                                            </a>
+                                                            <a class="btn btn-default btn-xs" href="{{ob}}/edit/{{obj.id}}">
+                                                                <span class="glyphicon glyphicon-pencil"></span>
+                                                            </a>
+                                                            <a class="btn btn-default btn-xs" href="{{ob}}/remove/{{obj.id}}">
+                                                                <span class="glyphicon glyphicon-remove"></span>
+                                                            </a>
+                                                            <a class="btn btn-default btn-xs" ng-click="pop(obj.id, 'analitica', 'AnaliticaRemovepopController', 'removepop')">
+                                                                <span class="glyphicon glyphicon-remove"></span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer" style="font-family: Questrial, serif;" ng-include="'js/system/footer.html'"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
